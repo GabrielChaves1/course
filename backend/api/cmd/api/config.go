@@ -8,8 +8,10 @@ import (
 )
 
 type Cognito struct {
-	issuer      string
-	appClientID string
+	issuer          string
+	appClientID     string
+	appClientSecret string
+	userPoolID      string
 }
 
 type Config struct {
@@ -40,11 +42,23 @@ func NewConfig() (*Config, error) {
 		return nil, fmt.Errorf("env var COGNITO_APP_CLIENT_ID not defined")
 	}
 
+	cognitoAppClientSecret := os.Getenv("COGNITO_APP_CLIENT_SECRET")
+	if cognitoAppClientSecret == "" {
+		return nil, fmt.Errorf("env var COGNITO_APP_CLIENT_SECRET not defined")
+	}
+
+	cognitoUserPoolID := os.Getenv("COGNITO_USER_POOL_ID")
+	if cognitoUserPoolID == "" {
+		return nil, fmt.Errorf("env var COGNITO_USER_POOL_ID not defined")
+	}
+
 	return &Config{
 		environment: environment,
 		cognito: Cognito{
-			issuer:      cognitoIssuer,
-			appClientID: cognitoAppClientID,
+			issuer:          cognitoIssuer,
+			appClientID:     cognitoAppClientID,
+			appClientSecret: cognitoAppClientSecret,
+			userPoolID:      cognitoUserPoolID,
 		},
 	}, nil
 }

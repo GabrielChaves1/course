@@ -23,4 +23,6 @@ func (e AppError) Error() string {
 	return e.Detail
 }
 
-func NewValidationAppError(ctx context.Context, validationErrs *error)
+func NewValidationAppError(ctx context.Context, validationErrs *) {
+	
+}

@@ -28,3 +28,28 @@ resource "aws_cognito_user_pool" "this" {
     mutable             = true
   }
 }
+
+resource "aws_cognito_user_pool_client" "this" {
+  name         = "${var.user_pool_name}-client"
+  user_pool_id = aws_cognito_user_pool.this.id
+
+  generate_secret = true
+
+  explicit_auth_flows = [
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
+  ]
+
+  read_attributes = [
+    "email",
+    "email_verified",
+    "name",
+    "updated_at"
+  ]
+
+  write_attributes = [
+    "email",
+    "name",
+    "updated_at"
+  ]
+}
