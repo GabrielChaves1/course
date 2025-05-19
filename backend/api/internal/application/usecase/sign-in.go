@@ -1,0 +1,4 @@
+package usecase
+
+func NewSignInUseCase() {
+}
