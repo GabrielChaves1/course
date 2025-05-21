@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/GabrielChaves1/course/internal/application/dto/request"
@@ -41,12 +42,14 @@ func (h AuthenticationHandlers) SignIn(c *gin.Context) {
 func (h AuthenticationHandlers) SignUp(c *gin.Context) {
 	var dto request.SignUpDTO
 	if err := c.ShouldBindJSON(&dto); err != nil {
+		fmt.Println(err)
 		// middleware.HandleError(c, err)
 		return
 	}
 
 	err := h.signUpUseCase.Execute(c.Request.Context(), dto)
 	if err != nil {
+		fmt.Println(err)
 		// middleware.HandleError(c, err)
 		return
 	}

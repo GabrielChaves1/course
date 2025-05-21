@@ -2,16 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/GabrielChaves1/course/internal/domain/types"
+	"github.com/joho/godotenv"
 )
 
 type Cognito struct {
-	issuer          string
-	appClientID     string
-	appClientSecret string
-	userPoolID      string
+	appClientID string
+	userPoolID  string
 }
 
 type Config struct {
@@ -20,6 +20,11 @@ type Config struct {
 }
 
 func NewConfig() (*Config, error) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	env := os.Getenv("ENVIRONMENT")
 	var environment types.Environment
 
@@ -32,19 +37,9 @@ func NewConfig() (*Config, error) {
 		environment = types.Development
 	}
 
-	cognitoIssuer := os.Getenv("COGNITO_ISSUER")
-	if cognitoIssuer == "" {
-		return nil, fmt.Errorf("env var COGNITO_ISSUER not defined")
-	}
-
 	cognitoAppClientID := os.Getenv("COGNITO_APP_CLIENT_ID")
 	if cognitoAppClientID == "" {
 		return nil, fmt.Errorf("env var COGNITO_APP_CLIENT_ID not defined")
-	}
-
-	cognitoAppClientSecret := os.Getenv("COGNITO_APP_CLIENT_SECRET")
-	if cognitoAppClientSecret == "" {
-		return nil, fmt.Errorf("env var COGNITO_APP_CLIENT_SECRET not defined")
 	}
 
 	cognitoUserPoolID := os.Getenv("COGNITO_USER_POOL_ID")
@@ -55,10 +50,9 @@ func NewConfig() (*Config, error) {
 	return &Config{
 		environment: environment,
 		cognito: Cognito{
-			issuer:          cognitoIssuer,
-			appClientID:     cognitoAppClientID,
-			appClientSecret: cognitoAppClientSecret,
-			userPoolID:      cognitoUserPoolID,
+			// issuer:          cognitoIssuer,
+			appClientID: cognitoAppClientID,
+			userPoolID:  cognitoUserPoolID,
 		},
 	}, nil
 }

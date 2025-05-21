@@ -14,7 +14,9 @@ import (
 	cognitoidp "github.com/GabrielChaves1/course/internal/clients/idp/cognito"
 	"github.com/GabrielChaves1/course/internal/http/handlers"
 	"github.com/GabrielChaves1/course/internal/http/router"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
 )
 
 func initializeDependencies(cfg *Config) (idp.Client, error) {
@@ -24,7 +26,19 @@ func initializeDependencies(cfg *Config) (idp.Client, error) {
 		return nil, err
 	}
 
-	cognitoClient, err := cognitoidp.NewCognitoProvider(sdk, cfg.cognito.appClientID, cfg.cognito.userPoolID)
+	ssmClient := ssm.NewFromConfig(sdk)
+
+	output, err := ssmClient.GetParameter(ctx, &ssm.GetParameterInput{
+		Name:           aws.String("/cognito/client_secret"),
+		WithDecryption: aws.Bool(true),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	cognitoClientSecret := *output.Parameter.Value
+
+	cognitoClient, err := cognitoidp.NewCognitoProvider(sdk, cfg.cognito.appClientID, cfg.cognito.userPoolID, cognitoClientSecret)
 	if err != nil {
 		return nil, err
 	}
