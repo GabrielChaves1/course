@@ -1,7 +1,8 @@
 resource "aws_cognito_user_pool" "this" {
   name = var.user_pool_name
 
-  username_attributes = ["email"]
+  username_attributes      = ["email"]
+  auto_verified_attributes = ["email"]
 
   password_policy {
     minimum_length    = 8
@@ -27,6 +28,13 @@ resource "aws_cognito_user_pool" "this" {
     required            = true
     mutable             = true
   }
+
+  schema {
+    name                = "phone_number"
+    attribute_data_type = "String"
+    required            = false
+    mutable             = true
+  }
 }
 
 resource "aws_cognito_user_pool_client" "this" {
@@ -44,12 +52,20 @@ resource "aws_cognito_user_pool_client" "this" {
     "email",
     "email_verified",
     "name",
+    "phone_number",
     "updated_at"
   ]
 
   write_attributes = [
     "email",
     "name",
+    "phone_number",
     "updated_at"
   ]
+}
+
+resource "aws_ssm_parameter" "cognito_client_secret_parameter" {
+  name  = "/cognito/client_secret"
+  value = aws_cognito_user_pool_client.this.client_secret
+  type  = "SecureString"
 }
