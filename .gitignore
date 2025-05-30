@@ -235,5 +235,6 @@ terraform.rc
 .ionide
 
 .vite
+.pem
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform,node,react,go,visualstudiocode

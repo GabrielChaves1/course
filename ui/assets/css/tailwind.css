@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-calistoga: "Calistoga", serif;
+  --font-poppins: "Poppins", sans-serif;
+
+  --text-background: theme('colors.stone.50');
+  --text-foreground: theme('colors.stone.800');
+}
+
+button {
+  cursor: pointer;
+}
+
+@layer base {
+  * {
+    @apply box-border font-poppins text-[var(--color-text-primary)];
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
