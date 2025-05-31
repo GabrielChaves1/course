@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/fonts", "@nuxt/icon"],
   css: ["~/assets/css/tailwind.css"],
   ssr: false,
+
   fonts: {
     families: [
       { name: "Poppins", provider: "google" },
@@ -23,5 +24,11 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-  }
+  },
+
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || "http://localhost:8080",
+    },
+  },
 });

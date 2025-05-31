@@ -4,6 +4,7 @@
   --font-calistoga: "Calistoga", serif;
   --font-poppins: "Poppins", sans-serif;
 
+  --color-text-primary: theme('colors.stone.800');
   --text-background: theme('colors.stone.50');
   --text-foreground: theme('colors.stone.800');
 }

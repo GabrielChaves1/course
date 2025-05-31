@@ -1,9 +1,7 @@
 <template>
   <button
-    class="flex items-center justify-center gap-2 px-6 py-3 rounded-full transition-colors"
-    :class="[sizeClasses[size], variantClasses[variant]]"
-    v-bind="$attrs"
-  >
+    class="flex items-center justify-center gap-2 px-6 py-3 rounded-full transition-colors focus:ring-indigo-900 focus:ring-2 focus:border-indigo-500 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+    :class="[sizeClasses[size], variantClasses[variant]]" v-bind="$attrs">
     <slot />
   </button>
 </template>
@@ -26,7 +24,7 @@ const sizeClasses = {
 };
 
 const variantClasses = {
-  primary: "bg-indigo-600 text-white hover:bg-indigo-700 border-indigo-600",
+  primary: "bg-indigo-600 text-white *:text-white hover:bg-indigo-700 border-indigo-600",
   secondary: "bg-gray-600 text-white hover:bg-gray-700 border-gray-600",
   danger: "bg-red-600 text-white hover:bg-red-700 border-red-600",
 };
